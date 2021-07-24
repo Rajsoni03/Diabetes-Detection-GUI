@@ -10,4 +10,3 @@ sklearn
 scikit-learn
 catboost
 lightgbm
-xgboost

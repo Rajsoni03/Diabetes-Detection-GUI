@@ -81,9 +81,6 @@
                 <div class="alert alert-light" role="alert"> LightGBM Classifier :
                     <span class="badge badge-secondary float-right" id="lgb">---- </span>
                 </div>
-                <div class="alert alert-light" role="alert"> XGBoost Classifier:
-                    <span class="badge badge-secondary float-right" id="xgb">---- </span>
-                </div>
                 <div class="alert alert-light" role="alert"> KNeighbors Classifier :
                     <span class="badge badge-secondary float-right" id="knn">---- </span>
                 </div>
@@ -180,14 +177,6 @@
                             $('#lgb').attr("class", "badge badge-success float-right");
                         }
 
-                        if (data["xgb"]) {
-                            $('#xgb').html("Diabetes");
-                            $('#xgb').attr("class", "badge badge-danger float-right");
-                        } else {
-                            $('#xgb').html("Normal");
-                            $('#xgb').attr("class", "badge badge-success float-right");
-                        }
-
                         if (data["knn"]) {
                             $('#knn').html("Diabetes");
                             $('#knn').attr("class", "badge badge-danger float-right");
@@ -210,11 +199,10 @@
                         $('#rf').html("None");
                         $('#sgd').html("None");
                         $('#lgb').html("None");
-                        $('#xgb').html("None");
                         $('#knn').html("None");
                         $('#cb').html("None");
 
-                        $('#lr, #dt, #rf, #svc, #sgd, #lgb, #xgb, #knn, #cb').attr("class", "badge badge-secondary float-right");
+                        $('#lr, #dt, #rf, #svc, #sgd, #lgb, #knn, #cb').attr("class", "badge badge-secondary float-right");
                     }
 
                     $('#loading').hide();
