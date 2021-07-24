@@ -114,13 +114,13 @@
     <script type="text/javascript">
     $('#loading').hide();
 
-    // ajax send image to api
+    // ajax send data to api
     $(function() {
         $('#myBtn').click(function() {
 
             setTimeout(function() {
                 $('#loading').show();
-            }, 200);
+            }, 100);
             var form_data = new FormData($('#dataUploadForm')[0]);
             $.ajax({
                 type: 'POST',
@@ -218,7 +218,6 @@
                     }
 
                     $('#loading').hide();
-
                 },
             });
         });
