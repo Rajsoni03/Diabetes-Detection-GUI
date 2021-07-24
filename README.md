@@ -1,7 +1,7 @@
 # Diabetes-Detection-GUI
 Diagnosis of Diabetes Disease using Machine Learning Algorithms
 
-Project Link - https://covid-ai-app.herokuapp.com/<br>
+Project Link - https://diabetes-detector-ml.herokuapp.com/<br>
 
 <!-- 
 ## A Deep Learning Projects For Diagnosis of COVID Disease by Chest X-Ray Images.
