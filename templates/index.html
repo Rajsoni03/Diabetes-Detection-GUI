@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS and JS-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity=" sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <title>Diabetes Detector</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-center text-secondary mt-4">Diabetes Detector</h1>
+        <div class="row mt-0 mt-md-5">
+            <div class="col-12 col-md-5 mx-auto px-0 bg-light">
+                <form runat="server" method="post" id='dataUploadForm' class="text-center mb-md-0 mb-5">
+                    <!-- <img class="mt-3" id="image" src="/static/chest-x-ray.jpg" alt="your image" style="width:100%;height:100%;border: 5px solid black" name="image"/> -->
+                    <h3>
+                        <div class="alert alert-primary mx-0 px-0" role="alert">
+                            Patient Data
+                        </div>
+                    </h3>
+                    <div class="form-group text-left mx-2">
+                        <label for="Pregnancies">Pregnancies</label>
+                        <input type="text" class="form-control" id="Pregnancies" name="Pregnancies">
+                    </div>
+                    <div class="form-group text-left mx-2">
+                        <label for="Glucose">Glucose</label>
+                        <input type="text" class="form-control" id="Glucose" name="Glucose">
+                    </div>
+                    <div class="form-group text-left mx-2">
+                        <label for="BloodPressure">BloodPressure</label>
+                        <input type="text" class="form-control" id="BloodPressure" name="BloodPressure">
+                    </div>
+                    <div class="form-group text-left mx-2">
+                        <label for="SkinThickness">SkinThInsulinickness</label>
+                        <input type="text" class="form-control" id="SkinThickness" name="SkinThickness">
+                    </div>
+                    <div class="form-group text-left mx-2">
+                        <label for="Insulin">Insulin</label>
+                        <input type="text" class="form-control" id="Insulin" name="Insulin">
+                    </div>
+                    <div class="form-group text-left mx-2">
+                        <label for="BMI">BMI</label>
+                        <input type="text" class="form-control" id="BMI" name="BMI">
+                    </div>
+                    <div class="form-group text-left mx-2">
+                        <label for="DPFunction">DPFunction</label>
+                        <input type="text" class="form-control" id="DPFunction" name="DPFunction">
+                    </div>
+                    <div class="form-group text-left mx-2">
+                        <label for="Age">Age</label>
+                        <input type="text" class="form-control" id="Age" name="Age">
+                    </div>
+                </form>
+                <button id="myBtn" class="btn btn-primary"><i class="fa fa-upload text-white" aria-hidden="true"></i> Submit Data</button>
+            </div>
+            <div class="col-12 col-md-6 mx-auto text-left mb-md-0 mb-5">
+                <h2 class="text-secondary text-center">Results</h2>
+                <div class="alert alert-light" role="alert"> Logistic Regression :
+                    <span class="badge badge-secondary float-right" id="lr">---- </span>
+                </div>
+                <div class="alert alert-light" role="alert"> Decision Tree Classifier :
+                    <span class="badge badge-secondary float-right" id="dt">---- </span>
+                </div>
+                <div class="alert alert-light" role="alert"> Support Vector Classifier :
+                    <span class="badge badge-secondary float-right" id="svc">---- </span>
+                </div>
+                <div class="alert alert-light" role="alert"> Random Forest Classifier :
+                    <span class="badge badge-secondary float-right" id="rf">---- </span>
+                </div>
+                <div class="alert alert-light" role="alert"> SGD Classifier :
+                    <span class="badge badge-secondary float-right" id="sgd">---- </span>
+                </div>
+                <div class="alert alert-light" role="alert"> LightGBM Classifier :
+                    <span class="badge badge-secondary float-right" id="lgb">---- </span>
+                </div>
+                <div class="alert alert-light" role="alert"> XGBoost Classifier:
+                    <span class="badge badge-secondary float-right" id="xgb">---- </span>
+                </div>
+                <div class="alert alert-light" role="alert"> KNeighbors Classifier :
+                    <span class="badge badge-secondary float-right" id="knn">---- </span>
+                </div>
+                <div class="alert alert-light" role="alert"> CatBoost Classifier :
+                    <span class="badge badge-secondary float-right" id="cb">---- </span>
+                </div>
+                <div class="loading" id="loading"> </div>
+            </div>
+        </div>
+    </div>
+    <!-- <dir class="fixed-bottom text-md-right text-center p-0 mb-0">
+    <h5 class="p-2 pr-4 text-secondary">Created By Raj Soni</h5>
+  </dir> -->
+    <style type="text/css">
+    /* If the screen size is 600px wide or less */
+    @media screen and (max-width: 600px) {
+        .fixed-bottom {
+            position: relative;
+        }
+    }
+
+    .loading {
+        background: url(../static/loading.svg) no-repeat 50% 50%;
+        width: auto;
+        height: 80px;
+    }
+    </style>
+    <script type="text/javascript">
+    $('#loading').hide();
+
+    // ajax send image to api
+    $(function() {
+        $('#myBtn').click(function() {
+
+            setTimeout(function() {
+                $('#loading').show();
+            }, 200);
+            var form_data = new FormData($('#dataUploadForm')[0]);
+            $.ajax({
+                type: 'POST',
+                url: '/upload',
+                data: form_data,
+                contentType: false,
+                cache: false,
+                processData: false,
+                complete: function() { setTimeout(function() { $('#loading').hide(); }, 0); },
+                success: function(data) {
+                    console.log(data);
+                    if (data["status"]) {
+                        if (data["lr"]) {
+                            $('#lr').html("Diabetes");
+                            $('#lr').attr("class", "badge badge-danger float-right");
+                        } else {
+                            $('#lr').html("Normal");
+                            $('#lr').attr("class", "badge badge-success float-right");
+                        }
+
+                        if (data["dt"]) {
+                            $('#dt').html("Diabetes");
+                            $('#dt').attr("class", "badge badge-danger float-right");
+                        } else {
+                            $('#dt').html("Normal");
+                            $('#dt').attr("class", "badge badge-success float-right");
+                        }
+                        if (data["svc"]) {
+                            $('#svc').html("Diabetes");
+                            $('#svc').attr("class", "badge badge-danger float-right");
+                        } else {
+                            $('#svc').html("Normal");
+                            $('#svc').attr("class", "badge badge-success float-right");
+                        }
+
+                        if (data["rf"]) {
+                            $('#rf').html("Diabetes");
+                            $('#rf').attr("class", "badge badge-danger float-right");
+                        } else {
+                            $('#rf').html("Normal");
+                            $('#rf').attr("class", "badge badge-success float-right");
+                        }
+
+                        if (data["sgd"]) {
+                            $('#sgd').html("Diabetes");
+                            $('#sgd').attr("class", "badge badge-danger float-right");
+                        } else {
+                            $('#sgd').html("Normal");
+                            $('#sgd').attr("class", "badge badge-success float-right");
+                        }
+
+                        if (data["lgb"]) {
+                            $('#lgb').html("Diabetes");
+                            $('#lgb').attr("class", "badge badge-danger float-right");
+                        } else {
+                            $('#lgb').html("Normal");
+                            $('#lgb').attr("class", "badge badge-success float-right");
+                        }
+
+                        if (data["xgb"]) {
+                            $('#xgb').html("Diabetes");
+                            $('#xgb').attr("class", "badge badge-danger float-right");
+                        } else {
+                            $('#xgb').html("Normal");
+                            $('#xgb').attr("class", "badge badge-success float-right");
+                        }
+
+                        if (data["knn"]) {
+                            $('#knn').html("Diabetes");
+                            $('#knn').attr("class", "badge badge-danger float-right");
+                        } else {
+                            $('#knn').html("Normal");
+                            $('#knn').attr("class", "badge badge-success float-right");
+                        }
+
+                        if (data["cb"]) {
+                            $('#cb').html("Diabetes");
+                            $('#cb').attr("class", "badge badge-danger float-right");
+                        } else {
+                            $('#cb').html("Normal");
+                            $('#cb').attr("class", "badge badge-success float-right");
+                        }
+                    } else {
+                        $('#lr').html("None");
+                        $('#dt').html("None");
+                        $('#svc').html("None");
+                        $('#rf').html("None");
+                        $('#sgd').html("None");
+                        $('#lgb').html("None");
+                        $('#xgb').html("None");
+                        $('#knn').html("None");
+                        $('#cb').html("None");
+
+                        $('#lr, #dt, #rf, #svc, #sgd, #lgb, #xgb, #knn, #cb').attr("class", "badge badge-secondary float-right");
+                    }
+
+                    $('#loading').hide();
+
+                },
+            });
+        });
+    });
+    </script>
+</body>
+
+</html>
